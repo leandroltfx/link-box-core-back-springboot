@@ -13,7 +13,6 @@ public class SecurityConfig {
         httpSecurity
                 // Desabilitando as configurações padrão do Spring Security
                 .csrf(csrf -> csrf.disable());
-        ;
         return httpSecurity.build();
     }
 
