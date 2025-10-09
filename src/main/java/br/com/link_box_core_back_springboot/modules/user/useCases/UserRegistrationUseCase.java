@@ -1,10 +1,13 @@
 package br.com.link_box_core_back_springboot.modules.user.useCases;
 
 import br.com.link_box_core_back_springboot.exceptions.UserFoundException;
+import br.com.link_box_core_back_springboot.modules.user.dtos.UserRegistrationRequestDTO;
 import br.com.link_box_core_back_springboot.modules.user.dtos.UserRegistrationResponseDTO;
 import br.com.link_box_core_back_springboot.modules.user.entities.UserEntity;
+import br.com.link_box_core_back_springboot.modules.user.mappers.UserMapper;
 import br.com.link_box_core_back_springboot.modules.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -16,7 +19,15 @@ public class UserRegistrationUseCase {
     @Autowired
     private UserRepository userRepository;
 
-    public UserRegistrationResponseDTO execute(UserEntity userEntity) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    public UserRegistrationResponseDTO execute(UserRegistrationRequestDTO userRegistrationRequestDTO) {
+
+        UserEntity userEntity = userMapper.toEntity(userRegistrationRequestDTO);
 
         this.userRepository.findByUserNameOrEmail(
                 userEntity.getUserName(),
@@ -24,6 +35,8 @@ public class UserRegistrationUseCase {
         ).ifPresent(user -> {
             throw new UserFoundException("Este e-mail e/ou nome de usuário já está em uso.");
         });
+
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
         this.userRepository.save(userEntity);
 
