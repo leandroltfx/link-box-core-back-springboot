@@ -6,6 +6,7 @@ import br.com.link_box_core_back_springboot.modules.user.dtos.UserRegistrationRe
 import br.com.link_box_core_back_springboot.modules.user.entities.UserEntity;
 import br.com.link_box_core_back_springboot.modules.user.mappers.UserMapper;
 import br.com.link_box_core_back_springboot.modules.user.repositories.UserRepository;
+import br.com.link_box_core_back_springboot.providers.JWTProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class UserRegistrationUseCase {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private JWTProvider jwtProvider;
+
     public UserRegistrationResponseDTO execute(UserRegistrationRequestDTO userRegistrationRequestDTO) {
 
         UserEntity userEntity = userMapper.toEntity(userRegistrationRequestDTO);
@@ -38,14 +42,12 @@ public class UserRegistrationUseCase {
 
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
-        this.userRepository.save(userEntity);
-
-        var expiresIn = Instant.now().plus(Duration.ofHours(1));
+        var createdUser = this.userRepository.save(userEntity);
 
         return UserRegistrationResponseDTO
                 .builder()
-                .access_token("GLMfXGvIt8iwaJiOPoeCCm2ps7G14tvw4up2s7k3cK8aX3WdkjLWRKi6HHspVGEp")
-                .expires_in(expiresIn.toEpochMilli())
+                .access_token(jwtProvider.generateToken(createdUser.getId()))
+                .expires_in(jwtProvider.generateTokenExpirationTime().toEpochMilli())
                 .message("Usuário cadastrado com sucesso!")
                 .build();
     }
