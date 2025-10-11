@@ -39,4 +39,16 @@ public class CollectionMapper {
         return collectionDTOList;
     }
 
+    public CollectionDTO toDTO(
+            CollectionEntity collectionEntity
+    ) {
+        return CollectionDTO
+                .builder()
+                .id(collectionEntity.getId())
+                .name(collectionEntity.getName())
+                .description(collectionEntity.getDescription())
+                .createdAt(collectionEntity.getCreatedAt())
+                .build();
+    }
+
 }
