@@ -29,9 +29,9 @@ public class CollectionController {
     @PostMapping
     public ResponseEntity<CreateCollectionResponseDTO> createCollection(
             @Valid @RequestBody CreateCollectionRequestDTO createCollectionRequestDTO,
-            HttpServletRequest request
+            HttpServletRequest httpServletRequest
     ) {
-        var userId = request.getAttribute("user_id");
+        var userId = httpServletRequest.getAttribute("user_id");
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 this.createCollectionUseCase.execute(
                         createCollectionRequestDTO,
