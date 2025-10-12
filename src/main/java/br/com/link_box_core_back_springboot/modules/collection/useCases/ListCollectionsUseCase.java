@@ -20,7 +20,7 @@ public class ListCollectionsUseCase {
     @Autowired
     private CollectionMapper collectionMapper;
 
-    public Page<CollectionDTO> listCollections(
+    public Page<CollectionDTO> execute(
             UUID userId,
             int page,
             int size

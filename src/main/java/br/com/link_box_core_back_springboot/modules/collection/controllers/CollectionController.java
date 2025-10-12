@@ -50,7 +50,7 @@ public class CollectionController {
         var userId = httpServletRequest.getAttribute("user_id");
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(listCollectionsUseCase.listCollections(UUID.fromString(userId.toString()), page, size));
+                .body(listCollectionsUseCase.execute(UUID.fromString(userId.toString()), page, size));
     }
 
     @PatchMapping("/{collection_id}")
