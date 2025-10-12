@@ -1,11 +1,9 @@
 package br.com.link_box_core_back_springboot.modules.collection.controllers;
 
-import br.com.link_box_core_back_springboot.modules.collection.dtos.CollectionDTO;
-import br.com.link_box_core_back_springboot.modules.collection.dtos.CreateCollectionRequestDTO;
-import br.com.link_box_core_back_springboot.modules.collection.dtos.CreateCollectionResponseDTO;
-import br.com.link_box_core_back_springboot.modules.collection.mappers.CollectionMapper;
+import br.com.link_box_core_back_springboot.modules.collection.dtos.*;
 import br.com.link_box_core_back_springboot.modules.collection.useCases.CreateCollectionUseCase;
 import br.com.link_box_core_back_springboot.modules.collection.useCases.ListCollectionsUseCase;
+import br.com.link_box_core_back_springboot.modules.collection.useCases.UpdateCollectionUseCase;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,10 +22,10 @@ public class CollectionController {
     private CreateCollectionUseCase createCollectionUseCase;
 
     @Autowired
-    private CollectionMapper collectionMapper;
+    private ListCollectionsUseCase listCollectionsUseCase;
 
     @Autowired
-    private ListCollectionsUseCase listCollectionsUseCase;
+    private UpdateCollectionUseCase updateCollectionUseCase;
 
     @PostMapping
     public ResponseEntity<CreateCollectionResponseDTO> createCollection(
@@ -54,6 +51,22 @@ public class CollectionController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(listCollectionsUseCase.listCollections(UUID.fromString(userId.toString()), page, size));
+    }
+
+    @PatchMapping("/{collection_id}")
+    public ResponseEntity<UpdateCollectionResponseDTO> updateCollection(
+            @PathVariable("collection_id") UUID collectionId,
+            @Valid @RequestBody UpdateCollectionRequestDTO updateCollectionRequestDTO,
+            HttpServletRequest httpServletRequest
+    ) {
+        var userId = httpServletRequest.getAttribute("user_id");
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                this.updateCollectionUseCase.execute(
+                        collectionId,
+                        updateCollectionRequestDTO,
+                        UUID.fromString(userId.toString())
+                )
+        );
     }
 
 }

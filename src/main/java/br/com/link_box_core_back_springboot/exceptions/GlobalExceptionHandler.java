@@ -2,6 +2,7 @@ package br.com.link_box_core_back_springboot.exceptions;
 
 import br.com.link_box_core_back_springboot.dtos.ErrorFieldDTO;
 import br.com.link_box_core_back_springboot.dtos.ResponseErrorDTO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,6 +58,14 @@ public class GlobalExceptionHandler {
     ) {
         ResponseErrorDTO responseErrorDTO = new ResponseErrorDTO(userNotFoundException.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseErrorDTO);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ResponseErrorDTO> entityNotFoundException(
+            EntityNotFoundException entityNotFoundException
+    ) {
+        ResponseErrorDTO responseErrorDTO = new ResponseErrorDTO(entityNotFoundException.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseErrorDTO);
     }
 
 }
