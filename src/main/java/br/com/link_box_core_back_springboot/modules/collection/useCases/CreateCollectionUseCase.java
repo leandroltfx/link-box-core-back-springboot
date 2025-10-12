@@ -33,7 +33,7 @@ public class CreateCollectionUseCase {
         return CreateCollectionResponseDTO
                 .builder()
                 .message("Coleção cadastrada com sucesso!")
-                .collections(this.collectionMapper.toListDTO(collections))
+                .data(this.collectionMapper.toListDTO(collections))
                 .build();
     }
 

@@ -14,6 +14,6 @@ import java.util.List;
 public class CreateCollectionResponseDTO {
 
     private String message;
-    private List<CollectionDTO> collections;
+    private List<CollectionDTO> data;
 
 }
