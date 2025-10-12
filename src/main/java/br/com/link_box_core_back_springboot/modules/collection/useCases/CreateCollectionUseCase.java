@@ -1,5 +1,6 @@
 package br.com.link_box_core_back_springboot.modules.collection.useCases;
 
+import br.com.link_box_core_back_springboot.modules.collection.dtos.CollectionDTO;
 import br.com.link_box_core_back_springboot.modules.collection.dtos.CreateCollectionRequestDTO;
 import br.com.link_box_core_back_springboot.modules.collection.dtos.CreateCollectionResponseDTO;
 import br.com.link_box_core_back_springboot.modules.collection.entities.CollectionEntity;
@@ -29,14 +30,14 @@ public class CreateCollectionUseCase {
         CollectionEntity collectionEntity = collectionMapper.toEntity(createCollectionRequestDTO);
         collectionEntity.setUserId(userId);
 
-        this.collectionRepository.save(collectionEntity);
+        var createdCollectionEntity = this.collectionRepository.save(collectionEntity);
 
-        var collections = this.listCollectionsUseCase.getCollectionsPageable(userId, 0, 10);
+        var createdCollectionDTO = collectionMapper.toDTO(createdCollectionEntity);
 
         return CreateCollectionResponseDTO
                 .builder()
                 .message("Coleção cadastrada com sucesso!")
-                .data(collections)
+                .data(createdCollectionDTO)
                 .build();
     }
 

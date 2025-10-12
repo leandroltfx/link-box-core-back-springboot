@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +12,6 @@ import org.springframework.data.domain.Page;
 public class CreateCollectionResponseDTO {
 
     private String message;
-    private Page<CollectionDTO> data;
+    private CollectionDTO data;
 
 }
