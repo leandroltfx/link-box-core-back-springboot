@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CreateCollectionResponseDTO {
+public class ListCollectionResponseDTO {
 
     private String message;
     private Page<CollectionDTO> data;

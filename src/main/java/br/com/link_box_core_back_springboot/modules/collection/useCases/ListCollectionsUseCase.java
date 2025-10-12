@@ -1,6 +1,7 @@
 package br.com.link_box_core_back_springboot.modules.collection.useCases;
 
 import br.com.link_box_core_back_springboot.modules.collection.dtos.CollectionDTO;
+import br.com.link_box_core_back_springboot.modules.collection.dtos.ListCollectionResponseDTO;
 import br.com.link_box_core_back_springboot.modules.collection.entities.CollectionEntity;
 import br.com.link_box_core_back_springboot.modules.collection.mappers.CollectionMapper;
 import br.com.link_box_core_back_springboot.modules.collection.repositories.CollectionRepository;
@@ -20,7 +21,22 @@ public class ListCollectionsUseCase {
     @Autowired
     private CollectionMapper collectionMapper;
 
-    public Page<CollectionDTO> execute(
+    public ListCollectionResponseDTO execute(
+            UUID userId,
+            int page,
+            int size
+    ) {
+
+        var collections = getCollectionsPageable(userId, page, size);
+
+        return ListCollectionResponseDTO
+                .builder()
+                .message(null)
+                .data(collections)
+                .build();
+    }
+
+    public PageImpl<CollectionDTO> getCollectionsPageable(
             UUID userId,
             int page,
             int size
@@ -35,11 +51,7 @@ public class ListCollectionsUseCase {
                 .map(collectionMapper::toDTO)
                 .toList();
 
-        return new PageImpl<>(
-                collectionDTOList,
-                pageable,
-                collectionEntityPage.getTotalElements()
-        );
+        return new PageImpl<>(collectionDTOList, pageable, collectionEntityPage.getTotalElements());
     }
 
 }

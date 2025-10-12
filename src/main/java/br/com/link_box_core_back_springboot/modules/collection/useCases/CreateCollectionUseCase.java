@@ -19,6 +19,9 @@ public class CreateCollectionUseCase {
     @Autowired
     private CollectionMapper collectionMapper;
 
+    @Autowired
+    private ListCollectionsUseCase listCollectionsUseCase;
+
     public CreateCollectionResponseDTO execute(
             CreateCollectionRequestDTO createCollectionRequestDTO,
             UUID userId
@@ -28,12 +31,12 @@ public class CreateCollectionUseCase {
 
         this.collectionRepository.save(collectionEntity);
 
-        var collections = this.collectionRepository.findAllByUserId(userId);
+        var collections = this.listCollectionsUseCase.getCollectionsPageable(userId, 0, 10);
 
         return CreateCollectionResponseDTO
                 .builder()
                 .message("Coleção cadastrada com sucesso!")
-                .data(this.collectionMapper.toListDTO(collections))
+                .data(collections)
                 .build();
     }
 

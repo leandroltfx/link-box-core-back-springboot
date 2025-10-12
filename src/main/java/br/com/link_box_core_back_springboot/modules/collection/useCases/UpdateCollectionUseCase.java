@@ -35,7 +35,7 @@ public class UpdateCollectionUseCase {
         collectionEntity.setDescription(updateCollectionRequestDTO.getDescription());
 
         this.collectionRepository.save(collectionEntity);
-        var collections = this.listCollectionsUseCase.execute(userId, 0, 10);
+        var collections = this.listCollectionsUseCase.getCollectionsPageable(userId, 0, 10);
 
         return UpdateCollectionResponseDTO
                 .builder()

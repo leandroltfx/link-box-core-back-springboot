@@ -42,7 +42,7 @@ public class CollectionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CollectionDTO>> listCollections(
+    public ResponseEntity<ListCollectionResponseDTO> listCollections(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest httpServletRequest
