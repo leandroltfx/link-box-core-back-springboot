@@ -15,7 +15,7 @@ public class SwaggerConfig {
                 .info(
                         new Info()
                                 .title("Link Box")
-                                .description("API core do Link Box")
+                                .description("API do Link Box")
                                 .version("1")
                 )
                 .schemaRequirement(
