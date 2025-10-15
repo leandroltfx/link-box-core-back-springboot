@@ -31,7 +31,6 @@ public class ListCollectionsUseCase {
 
         return ListCollectionResponseDTO
                 .builder()
-                .message(null)
                 .data(collections)
                 .build();
     }

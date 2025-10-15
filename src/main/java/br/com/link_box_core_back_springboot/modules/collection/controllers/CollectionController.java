@@ -1,9 +1,13 @@
 package br.com.link_box_core_back_springboot.modules.collection.controllers;
 
+import br.com.link_box_core_back_springboot.modules.collection.annotations.CreateCollectionSwaggerConfig;
+import br.com.link_box_core_back_springboot.modules.collection.annotations.ListCollectionsSwaggerConfig;
+import br.com.link_box_core_back_springboot.modules.collection.annotations.UpdateCollectionSwaggerConfig;
 import br.com.link_box_core_back_springboot.modules.collection.dtos.*;
 import br.com.link_box_core_back_springboot.modules.collection.useCases.CreateCollectionUseCase;
 import br.com.link_box_core_back_springboot.modules.collection.useCases.ListCollectionsUseCase;
 import br.com.link_box_core_back_springboot.modules.collection.useCases.UpdateCollectionUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/collections")
+@Tag(name = "Coleção", description = "Coleções para agrupar links")
 public class CollectionController {
 
     @Autowired
@@ -26,6 +31,7 @@ public class CollectionController {
     @Autowired
     private UpdateCollectionUseCase updateCollectionUseCase;
 
+    @CreateCollectionSwaggerConfig
     @PostMapping
     public ResponseEntity<CreateCollectionResponseDTO> createCollection(
             @Valid @RequestBody CreateCollectionRequestDTO createCollectionRequestDTO,
@@ -40,6 +46,7 @@ public class CollectionController {
         );
     }
 
+    @ListCollectionsSwaggerConfig
     @GetMapping
     public ResponseEntity<ListCollectionResponseDTO> listCollections(
             @RequestParam(defaultValue = "0") int page,
@@ -52,6 +59,7 @@ public class CollectionController {
                 .body(listCollectionsUseCase.execute(UUID.fromString(userId.toString()), page, size));
     }
 
+    @UpdateCollectionSwaggerConfig
     @PatchMapping("/{collection_id}")
     public ResponseEntity<UpdateCollectionResponseDTO> updateCollection(
             @PathVariable("collection_id") UUID collectionId,

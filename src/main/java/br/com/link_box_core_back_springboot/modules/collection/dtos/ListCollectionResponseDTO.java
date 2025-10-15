@@ -1,5 +1,6 @@
 package br.com.link_box_core_back_springboot.modules.collection.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import org.springframework.data.domain.Page;
 @NoArgsConstructor
 public class ListCollectionResponseDTO {
 
-    private String message;
+    @Schema(implementation = Page.class, description = "Lista de coleções do usuário")
     private Page<CollectionDTO> data;
 
 }
