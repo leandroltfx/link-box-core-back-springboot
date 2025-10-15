@@ -1,8 +1,10 @@
 package br.com.link_box_core_back_springboot.modules.login.controllers;
 
+import br.com.link_box_core_back_springboot.modules.login.annotations.LoginSwaggerConfig;
 import br.com.link_box_core_back_springboot.modules.login.dtos.LoginRequestDTO;
 import br.com.link_box_core_back_springboot.modules.login.dtos.LoginResponseDTO;
 import br.com.link_box_core_back_springboot.modules.login.useCases.LoginUseCase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +18,13 @@ import javax.naming.AuthenticationException;
 
 @RestController
 @RequestMapping("/login")
+@Tag(name = "Login", description = "Autenticação de usuário")
 public class LoginController {
 
     @Autowired
     private LoginUseCase loginUseCase;
 
+    @LoginSwaggerConfig
     @PostMapping
     public ResponseEntity<LoginResponseDTO> login(
             @Valid @RequestBody LoginRequestDTO loginRequestDTO

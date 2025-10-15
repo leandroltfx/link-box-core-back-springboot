@@ -30,7 +30,7 @@ public class LoginUseCase {
 
         UserEntity userEntity = this.userRepository
                 .findByEmail(loginRequestDTO.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("E-mail e/ou senha inválidos"));
+                .orElseThrow(() -> new AuthenticationException("E-mail e/ou senha inválidos"));
 
         var passwordMatches = this.passwordEncoder.matches(loginRequestDTO.getPassword(), userEntity.getPassword());
 
